@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using WeTransferDownloader.Enums;
-using WeTransferDownloader.Utils;
+using WeTransferDownloader.Utils.BrowserClients;
 
 namespace WeTransferDownloader.Handler
 {

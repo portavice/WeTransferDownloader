@@ -2,10 +2,10 @@
 using Aspose.Email.Clients.Imap;
 using Aspose.Email.Clients.Exchange;
 using WeTransferDownloader.Enums;
-using WeTransferDownloader.Utils;
 using Aspose.Email.Clients.Exchange.WebService;
 using System.Net;
 using Aspose.Email;
+using WeTransferDownloader.Utils.EmailClients;
 
 namespace WeTransferDownloader.Handler
 {

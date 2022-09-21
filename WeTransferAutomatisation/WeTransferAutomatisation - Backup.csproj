@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Company>portavice GmbH</Company>
-    <Authors>Shaun Lüdeke @ portavice GmbH</Authors>
+    <Authors>Shaun Lüdeke</Authors>
     <Description>Kleiner WeTransfer Downloader mit Mail Handeling funtionen</Description>
     <Copyright>portavice GmbH</Copyright>
     <PackageProjectUrl>https://www.nuget.org/packages/WeTransferAutomatisation</PackageProjectUrl>
@@ -15,12 +15,11 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>portavice-icon-32x32.png</PackageIcon>
-    <FileVersion>1.0.1</FileVersion>
+    <FileVersion>1.0.0</FileVersion>
     <AssemblyVersion>1.0.1</AssemblyVersion>
     <PackageTags>WeTransfer,Automatisation,Downloader</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
