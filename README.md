@@ -1,6 +1,8 @@
 # WeTransfer Automatisation
 
 ## Funktionen
-Dieser Branch ist eine version vom WeTransferDownloader der als benutzung als Nuget packet gemacht ist
-Mann kann EWS und IMAP verbindungen im Mailhandler angeben.
-Der DownloadHandler kann einzelnd benutzt werden es sind Treiber für Edge/ Firefox/ Chrome installiert 
+In diesem Version des WeTransferDownloader ist eine Version enthalten, die zur Nutzung als Nuget-Packet erstellt wurde.
+Die Emails können über EWS- und IMAP-Verbindungen abgerufen werden. 
+Die Konfiguration erfolgt hier im Mailhandler.
+Der WeTransferDownloader kann als Standalone Applikation genutzt werden.
+In dem Packet sind Treiber für die Browser Edge/ Firefox/ Chrome installiert.
