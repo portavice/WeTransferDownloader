@@ -9,7 +9,7 @@ using Aspose.Email;
 
 namespace WeTransferDownloader.Handler
 {
-    internal class EmailHandler
+    public class EmailHandler
     {
         private readonly EmailType? type = null;
         private readonly ImapClient? imapclient = null;
@@ -57,8 +57,6 @@ namespace WeTransferDownloader.Handler
             EmailType.EWS => ewsclient,
             _ => null
         };
-
-        public EmailType? GetEmailType() => type;
 
         public List<MessageInfoBase> GetWeTransferMails()
         {

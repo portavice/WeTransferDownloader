@@ -1,16 +1,16 @@
 ﻿namespace WeTransferDownloader.Utils
 {
-    class Chrome
+    public class Chrome
     {
         public string DownloadPath = "";
     }
 
-    class Firefox
+    public class Firefox
     {
         public string DownloadPath = "";
     }
 
-    class Edge
+    public class Edge
     {
         public string DownloadPath = "";
     }

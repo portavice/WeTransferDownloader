@@ -7,7 +7,7 @@ using WeTransferDownloader.Utils;
 
 namespace WeTransferDownloader.Handler
 {
-    internal class DownloadHandler
+    public class DownloadHandler
     {
         private readonly BrowserType? type = null;
         private readonly IWebDriver? driver = null;
@@ -52,7 +52,6 @@ namespace WeTransferDownloader.Handler
         }
 
         public IWebDriver? GetDriver() => driver;
-        public BrowserType? GetBrowserType() => type;
 
         public async void DownloadWeTransfer(string url)
         {

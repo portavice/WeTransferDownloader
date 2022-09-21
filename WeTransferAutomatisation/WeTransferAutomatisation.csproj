@@ -5,25 +5,22 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>Programm</StartupObject>
     <Company>portavice GmbH</Company>
     <Authors>Shaun Lüdeke</Authors>
     <Description>Kleiner WeTransfer Downloader mit Mail Handeling funtionen</Description>
     <Copyright>portavice GmbH</Copyright>
     <PackageProjectUrl></PackageProjectUrl>
-    <RepositoryUrl></RepositoryUrl>
+    <RepositoryUrl>https://github.com/portavice/WeTransferDownloader</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>portavice-icon-32x32.png</PackageIcon>
     <FileVersion>1.0.0</FileVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
-    <ApplicationIcon>portavice-icon-32x32.ico</ApplicationIcon>
+    <PackageTags>WeTransfer,Automatisation,Downloader</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="portavice-icon-32x32.ico" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\README.md">
