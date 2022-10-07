@@ -111,7 +111,7 @@ namespace WeTransferDownloader.Handler
                 }
                 catch (Exception) { }
             }
-            return new();
+            return result;
         }
     }
 }
