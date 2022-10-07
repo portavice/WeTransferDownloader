@@ -25,30 +25,40 @@ namespace WeTransferDownloader.Handler
         {
             type = BrowserType.Chrome;
             downloadpath = chrome.DownloadPath;
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
+            service.EnableVerboseLogging = false;
+            service.EnableAppendLog = false;
             ChromeOptions options = new();
             options.AddUserProfilePreference("download.default_directory", chrome.DownloadPath);
             options.AddUserProfilePreference("download.prompt_for_download", false);
-            driver = new ChromeDriver(options);
+            driver = new ChromeDriver(service, options);
         }
 
         public DownloadHandler(Firefox firefox)
         {
             type = BrowserType.Firefox;
-            downloadpath = firefox.DownloadPath;
+            downloadpath = firefox.DownloadPath; 
+            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
             FirefoxProfile profile = new();
             profile.SetPreference("browser.download.dir", firefox.DownloadPath);
             profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "*");
-            driver = new FirefoxDriver(new FirefoxOptions() { Profile = profile });
+            driver = new FirefoxDriver(service, new FirefoxOptions() { Profile = profile });
         }
 
         public DownloadHandler(Edge edge)
         {
-            type = BrowserType.Chrome;
+            type = BrowserType.Edge;
             downloadpath = edge.DownloadPath;
+            EdgeDriverService service = EdgeDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
+            service.EnableVerboseLogging = false;
+            service.EnableAppendLog = false;
             EdgeOptions options = new();
             options.AddUserProfilePreference("download.default_directory", edge.DownloadPath);
             options.AddUserProfilePreference("download.prompt_for_download", false);
-            driver = new EdgeDriver(options);
+            driver = new EdgeDriver(service, options);
         }
 
         public IWebDriver? GetDriver() => driver;
@@ -69,7 +79,9 @@ namespace WeTransferDownloader.Handler
 
                 await CheckIfDownloadisFinished();
             }
-            catch (Exception) { }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
             Stop();
         }
 
@@ -78,8 +90,8 @@ namespace WeTransferDownloader.Handler
             if (driver == null) return;
             try
             {
-                driver.Dispose();
                 driver.Close();
+                driver.Dispose();
             }
             catch (Exception) { }
         }

@@ -7,7 +7,9 @@
     <Nullable>enable</Nullable>
     <Company>portavice GmbH</Company>
     <Authors>Shaun Lüdeke @ portavice GmbH</Authors>
-    <Description>Kleiner WeTransfer Downloader mit Mail Handeling funtionen</Description>
+    <Description>Der WeTransfer-Downloader kümmert sich vollautomatisch um ihre empfangenen WeTransfers. Das Tool liest voll automatisch ein Emailpostfach aus und nimmt sich alle WeTransfer-Emails. Aus denen wird der Download-Link ausgelesen und die Daten herunter geladen.
+
+Diese Version des WeTransfer-Downloaders ist zur Nutzung als Nuget-Packet erstellt. Die Emails können über EWS- und IMAP-Verbindungen abgerufen werden. Die Konfiguration erfolgt hier im Mailhandler. Der WeTransfer-Downloader kann als Standalone Applikation genutzt werden. In dem Packet sind Treiber für die Browser Edge/ Firefox/ Chrome installiert.</Description>
     <Copyright>portavice GmbH</Copyright>
     <PackageProjectUrl>https://www.nuget.org/packages/WeTransferAutomatisation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/portavice/WeTransferDownloader</RepositoryUrl>
@@ -15,12 +17,12 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>portavice-icon-32x32.png</PackageIcon>
-    <FileVersion>1.0.1</FileVersion>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
     <PackageTags>WeTransfer,Automatisation,Downloader</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,12 +37,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.Email" Version="22.8.0" />
-    <PackageReference Include="Selenium.Mozilla.Firefox.Webdriver" Version="0.6.0.1" />
-    <PackageReference Include="Selenium.Support" Version="4.4.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.4.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="105.0.5195.5200" />
+    <PackageReference Include="Aspose.Email" Version="22.9.0" />
+    <PackageReference Include="Selenium.Support" Version="4.5.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.5.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="106.0.5249.6100" />
     <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.31.0.1" />
+    <PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.31.0" />
   </ItemGroup>
 
 </Project>
