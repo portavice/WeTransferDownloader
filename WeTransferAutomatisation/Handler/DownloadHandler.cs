@@ -63,7 +63,7 @@ namespace WeTransferDownloader.Handler
 
         public IWebDriver? GetDriver() => driver;
 
-        public async void DownloadWeTransfer(string url)
+        public async Task DownloadWeTransfer(string url)
         {
             if (driver == null || type == null) return;
             try
@@ -79,9 +79,7 @@ namespace WeTransferDownloader.Handler
 
                 await CheckIfDownloadisFinished();
             }
-            catch (Exception e) {
-                Console.WriteLine(e.Message);
-            }
+            catch (Exception) { }
             Stop();
         }
 
@@ -112,38 +110,41 @@ namespace WeTransferDownloader.Handler
             element.Click();
         }
 
-        public async Task<bool> CheckIfDownloadisFinished()
+        public async Task CheckIfDownloadisFinished()
         {
-            string[] files = Directory.GetFiles(downloadpath);
+            bool downloadFinished = false;
             switch (type)
             {
                 case BrowserType.Chrome:
                 case BrowserType.Edge:
-                    while (true)
+                    while (!downloadFinished)
                     {
-                        foreach (string file in files)
+                        foreach (string fi in Directory.GetFiles(downloadpath))
                         {
-                            if (!Path.GetExtension(file).EndsWith("crdownload"))
+                            downloadFinished = !Path.GetExtension(fi).Contains("crdownload");
+                            if (downloadFinished)
                             {
-                                return true;
+                                break;
                             }
                         }
                         await Task.Delay(1000);
                     }
+                    break;
                 case BrowserType.Firefox:
-                    while (true)
+                    while (!downloadFinished)
                     {
-                        foreach (string file in files)
+                        foreach (string fi in Directory.GetFiles(downloadpath))
                         {
-                            if (!Path.GetExtension(file).EndsWith("part"))
+                            downloadFinished = !Path.GetExtension(fi).Contains("part");
+                            if (downloadFinished)
                             {
-                                return true;
+                                break;
                             }
                         }
                         await Task.Delay(1000);
                     }
+                    break;
             }
-            return false;
         }
     }
 }
