@@ -19,11 +19,11 @@ EmailHandler emailHandler = new EmailHandler(new EWS("host", "domain", "username
 ```
 Create a DownloadHandler choose between Chrome, Firefox and Edge
 ```
-DownloadHandler downloadHandler = new DownloadHandler(new Chrome("downloadpath"))
-DownloadHandler downloadHandler = new DownloadHandler(new Firefox("downloadpath"))
-DownloadHandler downloadHandler = new DownloadHandler(new Edge("downloadpath"))
+DownloadHandler downloadHandler = new DownloadHandler(new Chrome("downloadpath"));
+DownloadHandler downloadHandler = new DownloadHandler(new Firefox("downloadpath"));
+DownloadHandler downloadHandler = new DownloadHandler(new Edge("downloadpath"));
 ```
 Start the Wetransfer Downloader with
 ```
-emailHandler.DownloadWeTransfer(downloadhandler)
+emailHandler.DownloadWeTransfer(downloadhandler);
 ```
