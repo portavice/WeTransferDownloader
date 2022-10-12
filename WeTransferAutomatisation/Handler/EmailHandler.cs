@@ -79,7 +79,33 @@ namespace WeTransferDownloader.Handler
                     }
                     return msgs;
             }
-            return new();
+            return msgs;
+        }
+
+        public string GetWeTransferDownloadLink(MessageInfoBase msginfo)
+        {
+            MailMessage? mail = type switch
+            {
+                EmailType.IMAP => imapclient?.FetchMessage(((ImapMessageInfo)msginfo).SequenceNumber),
+                EmailType.EWS => ewsclient?.FetchMessage(((ExchangeMessageInfo)msginfo).UniqueUri),
+                _ => null
+            };
+            if (mail == null || !mail.HtmlBody.Contains("<span style=\"color:#5268ff;font-weight:normal;text-decoration:underline;word-wrap:break-word\">"))
+            {
+                return "";
+            }
+            return mail.HtmlBody.Split("<span style=\"color:#5268ff;font-weight:normal;text-decoration:underline;word-wrap:break-word\">")[1].
+                Split("</span>")[0];
+        }
+
+        public string GetUniqueID(MessageInfoBase msginfo)
+        {
+            return type switch
+            {
+                EmailType.IMAP => ((ImapMessageInfo)msginfo).SequenceNumber.ToString(),
+                EmailType.EWS => ((ExchangeMessageInfo)msginfo).UniqueUri,
+                _ => msginfo.MessageId.ToString()
+            };
         }
 
         public List<string> DownloadWeTransfer(DownloadHandler downloader)
@@ -91,23 +117,10 @@ namespace WeTransferDownloader.Handler
             {
                 try
                 {
-                    MailMessage? mail = type switch
-                    {
-                        EmailType.IMAP => imapclient?.FetchMessage(((ImapMessageInfo)msginfo).SequenceNumber),
-                        EmailType.EWS => ewsclient?.FetchMessage(((ExchangeMessageInfo)msginfo).UniqueUri),
-                        _ => null
-                    };
-                    if (mail == null) continue;
-                    if (!mail.HtmlBody.Contains("<span style=\"color:#5268ff;font-weight:normal;text-decoration:underline;word-wrap:break-word\">")) continue;
-                    string downloadURL = mail.HtmlBody.Split("<span style=\"color:#5268ff;font-weight:normal;text-decoration:underline;word-wrap:break-word\">")[1].
-                        Split("</span>")[0];
+                    string downloadURL = GetWeTransferDownloadLink(msginfo);
+                    if(downloadURL == "") continue;
                     downloader.DownloadWeTransfer(downloadURL);
-                    result.Add(type switch
-                    {
-                        EmailType.IMAP => ((ImapMessageInfo)msginfo).SequenceNumber.ToString(),
-                        EmailType.EWS => ((ExchangeMessageInfo)msginfo).UniqueUri,
-                        _ => msginfo.MessageId.ToString()
-                    });
+                    result.Add(GetUniqueID(msginfo));
                 }
                 catch (Exception) { }
             }
