@@ -67,14 +67,14 @@ namespace WeTransferDownloader.Handler
                 case EmailType.IMAP:
                     foreach (ImapMessageInfo msginfo in GetIMAPEmails())
                     {
-                        if (!msginfo.From.Address.Contains("wetransfer")) continue;
+                        if (!msginfo.From.Address.ToLower().Contains("noreply@wetransfer.com")) continue;
                         msgs.Add(msginfo);
                     }
                     return msgs;
                 case EmailType.EWS:
                     foreach (ExchangeMessageInfo msginfo in GetEWSEmails())
                     {
-                        if (!msginfo.From.Address.Contains("wetransfer")) continue;
+                        if (!msginfo.From.Address.ToLower().Contains("noreply@wetransfer.com")) continue;
                         msgs.Add(msginfo);
                     }
                     return msgs;
@@ -90,12 +90,18 @@ namespace WeTransferDownloader.Handler
                 EmailType.EWS => ewsclient?.FetchMessage(((ExchangeMessageInfo)msginfo).UniqueUri),
                 _ => null
             };
-            if (mail == null || !mail.HtmlBody.Contains("<span style=\"color:#5268ff;font-weight:normal;text-decoration:underline;word-wrap:break-word\">"))
+            if (mail == null || !mail.HtmlBody.Contains("wetransfer.com/downloads/"))
             {
                 return "";
             }
-            return mail.HtmlBody.Split("<span style=\"color:#5268ff;font-weight:normal;text-decoration:underline;word-wrap:break-word\">")[1].
-                Split("</span>")[0];
+            foreach (string brakeEmail in mail.HtmlBody.Split("<a href="))
+            {
+                if (brakeEmail.Contains("wetransfer.com/downloads/"))
+                {
+                    return brakeEmail.Split("\"")[1];
+                }
+            }
+            return "";
         }
 
         public string GetUniqueID(MessageInfoBase msginfo)

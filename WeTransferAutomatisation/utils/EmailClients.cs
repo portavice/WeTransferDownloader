@@ -2,46 +2,44 @@
 
 namespace WeTransferDownloader.Utils.EmailClients
 {
-    public class IMAP
+    public abstract class EmailClients
     {
         public string host = "127.0.0.1";
-        public int port = 143;
         public string username = "root";
         public string password = "";
-        public SecurityOptions securityOptions = SecurityOptions.None;
         public string folder = "inbox";
 
-        public IMAP(string host, string username, string password)
+        public EmailClients(string host, string username, string password, string folder = "inbox")
         {
             this.host = host;
             this.username = username;
             this.password = password;
-        }
-
-        public IMAP(string host, int port, string username, string password, SecurityOptions securityOptions = SecurityOptions.None, string folder = "inbox")
-        {
-            this.host = host;
-            this.port = port;
-            this.username = username;
-            this.password = password;
-            this.securityOptions = securityOptions;
             this.folder = folder;
         }
     }
-
-    public class EWS
+    public class IMAP: EmailClients
     {
-        public string host = "127.0.0.1";
-        public string domain = "";
-        public string username = "root";
-        public string password = "";
+        public int port = 143;
+        public SecurityOptions securityOptions = SecurityOptions.None;
 
-        public EWS(string host, string domain, string username, string password)
+        public IMAP(string host, string username, string password, string folder = "inbox"): base(host, username, password, folder)
         {
-            this.host = host;
+        }
+
+        public IMAP(string host, int port, string username, string password, SecurityOptions securityOptions = SecurityOptions.None, string folder = "inbox") : base(host, username, password, folder)
+        {
+            this.port = port;
+            this.securityOptions = securityOptions;
+        }
+    }
+
+    public class EWS : EmailClients
+    {
+        public string domain = "";
+
+        public EWS(string host, string domain, string username, string password, string folder = "inbox") : base(host, username, password, folder)
+        {
             this.domain = domain;
-            this.username = username;
-            this.password = password;
         }
     }
 }

@@ -1,35 +1,34 @@
 ﻿namespace WeTransferDownloader.Utils.BrowserClients
 {
-    public class Chrome
+    public abstract class BrowserClients
     {
         public string DownloadPath = "";
         public bool Silent = false;
-        public Chrome(string DownloadPath = "", bool silent = false)
+
+        public BrowserClients(string downloadPath, bool silent)
         {
-            this.DownloadPath = DownloadPath;
+            DownloadPath = downloadPath;
             Silent = silent;
         }
     }
-
-    public class Firefox
+    public class Chrome : BrowserClients
     {
-        public string DownloadPath = "";
-        public bool Silent = false;
-        public Firefox(string DownloadPath = "", bool silent = false)
+        public Chrome(string downloadPath, bool silent) : base(downloadPath, silent)
         {
-            this.DownloadPath = DownloadPath;
-            Silent = silent;
         }
     }
 
-    public class Edge
+    public class Firefox : BrowserClients
     {
-        public string DownloadPath = "";
-        public bool Silent = false;
-        public Edge(string DownloadPath = "", bool silent = false)
+        public Firefox(string downloadPath, bool silent) : base(downloadPath, silent)
         {
-            this.DownloadPath = DownloadPath;
-            Silent = silent;
+        }
+    }
+
+    public class Edge : BrowserClients
+    {
+        public Edge(string downloadPath, bool silent) : base(downloadPath, silent)
+        {
         }
     }
 }

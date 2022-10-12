@@ -1,5 +1,5 @@
 .vs
 .git
-WeTransferAutomatisation/bin/Debug
+WeTransferAutomatisation/bin
 WeTransferAutomatisation/obj
 WeTransferAutomatisation/utils/Config.cs
