@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Interactions;
 using WeTransferDownloader.Enums;
 using WeTransferDownloader.Utils.BrowserClients;
 
@@ -28,8 +29,20 @@ namespace WeTransferDownloader.Handler
             ChromeDriverService service = ChromeDriverService.CreateDefaultService();
             service.SuppressInitialDiagnosticInformation = true;
             service.EnableVerboseLogging = false;
+            service.HideCommandPromptWindow = true;
             service.EnableAppendLog = false;
             ChromeOptions options = new();
+            if(chrome.Silent)
+            {
+                options.AddArguments("--disable-extensions");
+                options.AddArgument("test-type");
+                options.AddArgument("--ignore-certificate-errors");
+                options.AddArgument("no-sandbox");
+                options.AddArgument("headless");
+                options.AddArgument("--silent");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--log-level=3");
+            }
             options.AddUserProfilePreference("download.default_directory", chrome.DownloadPath);
             options.AddUserProfilePreference("download.prompt_for_download", false);
             driver = new ChromeDriver(service, options);
@@ -44,7 +57,19 @@ namespace WeTransferDownloader.Handler
             FirefoxProfile profile = new();
             profile.SetPreference("browser.download.dir", firefox.DownloadPath);
             profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "*");
-            driver = new FirefoxDriver(service, new FirefoxOptions() { Profile = profile });
+            FirefoxOptions options = new FirefoxOptions() { Profile = profile };
+            if(firefox.Silent)
+            {
+                options.AddArguments("--disable-extensions");
+                options.AddArgument("test-type");
+                options.AddArgument("--ignore-certificate-errors");
+                options.AddArgument("no-sandbox");
+                options.AddArgument("headless");
+                options.AddArgument("--silent");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--log-level=3");
+            }
+            driver = new FirefoxDriver(service, options);
         }
 
         public DownloadHandler(Edge edge)
@@ -56,6 +81,17 @@ namespace WeTransferDownloader.Handler
             service.EnableVerboseLogging = false;
             service.EnableAppendLog = false;
             EdgeOptions options = new();
+            if(edge.Silent)
+            {
+                options.AddArguments("--disable-extensions");
+                options.AddArgument("test-type");
+                options.AddArgument("--ignore-certificate-errors");
+                options.AddArgument("no-sandbox");
+                options.AddArgument("headless");
+                options.AddArgument("--silent");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--log-level=3");
+            }
             options.AddUserProfilePreference("download.default_directory", edge.DownloadPath);
             options.AddUserProfilePreference("download.prompt_for_download", false);
             driver = new EdgeDriver(service, options);

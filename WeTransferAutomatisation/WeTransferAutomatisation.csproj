@@ -17,12 +17,12 @@ Diese Version des WeTransfer-Downloaders ist zur Nutzung als Nuget-Packet erstel
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>portavice-icon-32x32.png</PackageIcon>
-    <FileVersion>1.0.5</FileVersion>
-    <AssemblyVersion>1.0.5</AssemblyVersion>
+    <FileVersion>1.0.6</FileVersion>
+    <AssemblyVersion>1.0.6</AssemblyVersion>
     <PackageTags>WeTransfer,Automatisation,Downloader</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,11 +38,12 @@ Diese Version des WeTransfer-Downloaders ist zur Nutzung als Nuget-Packet erstel
 
   <ItemGroup>
     <PackageReference Include="Aspose.Email" Version="22.9.0" />
-    <PackageReference Include="Selenium.Support" Version="4.5.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.5.0" />
+    <PackageReference Include="Selenium.Mozilla.Firefox.Webdriver" Version="0.6.0.1" />
+    <PackageReference Include="Selenium.Support" Version="4.5.1" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.5.1" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="106.0.5249.6100" />
     <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.31.0.1" />
-    <PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.31.0" />
+    <PackageReference Include="Selenium.WebDriver.MicrosoftDriver" Version="17.17134.0" />
   </ItemGroup>
 
 </Project>

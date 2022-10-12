@@ -108,7 +108,7 @@ namespace WeTransferDownloader.Handler
             };
         }
 
-        public List<string> DownloadWeTransfer(DownloadHandler downloader)
+        public async Task<List<string>> DownloadWeTransfer(DownloadHandler downloader)
         {
             List<MessageInfoBase> msgs = GetWeTransferMails();
             List<string> result = new();
@@ -119,7 +119,7 @@ namespace WeTransferDownloader.Handler
                 {
                     string downloadURL = GetWeTransferDownloadLink(msginfo);
                     if(downloadURL == "") continue;
-                    downloader.DownloadWeTransfer(downloadURL);
+                    await downloader.DownloadWeTransfer(downloadURL);
                     result.Add(GetUniqueID(msginfo));
                 }
                 catch (Exception) { }
