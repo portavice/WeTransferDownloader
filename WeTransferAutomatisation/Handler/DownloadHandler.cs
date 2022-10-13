@@ -9,7 +9,7 @@ namespace WeTransferDownloader.Handler
 {
     public class DownloadHandler
     {
-        private readonly BrowserType? type = null;
+        public readonly BrowserType? type = null;
         private readonly IWebDriver? driver = null;
         private readonly string downloadpath = "";
         private static readonly DownloadHandler? instance = null;

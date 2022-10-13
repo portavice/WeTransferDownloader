@@ -1,13 +1,13 @@
 ﻿namespace WeTransferDownloader.Enums
 {
-    internal enum BrowserType
+    public enum BrowserType
     {
         Chrome,
         Firefox,
         Edge,
     }
 
-    internal enum EmailType
+    public enum EmailType
     {
         IMAP,
         EWS,

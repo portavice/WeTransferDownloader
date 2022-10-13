@@ -11,7 +11,8 @@ namespace WeTransferDownloader.Handler
 {
     public class EmailHandler
     {
-        private readonly EmailType? type = null;
+        public readonly EmailType? type = null;
+        public readonly EmailClients? clientConfig = null;
         private readonly ImapClient? imapclient = null;
         private readonly IEWSClient? ewsclient = null;
         private static EmailHandler? instance = null;
@@ -22,6 +23,7 @@ namespace WeTransferDownloader.Handler
             imapclient = instance.imapclient;
             ewsclient = instance.ewsclient;
             type = instance.type;
+            clientConfig = instance.clientConfig;
         }
 
         public EmailHandler(IMAP imap)
@@ -29,6 +31,7 @@ namespace WeTransferDownloader.Handler
             type = EmailType.IMAP;
             imapclient = new ImapClient(imap.host, imap.port, imap.username, imap.password, imap.securityOptions);
             imapclient.CreateConnection();
+            clientConfig = imap;
             instance = this;
         }
 
@@ -36,19 +39,28 @@ namespace WeTransferDownloader.Handler
         {
             type = EmailType.EWS;
             ewsclient = EWSClient.GetEWSClient(ews.host, new NetworkCredential(ews.username, ews.password, ews.domain));
+            clientConfig = ews;
             instance = this;
         }
 
         public ExchangeMessageInfoCollection GetEWSEmails()
         {
-            if (instance == null || type == null || ewsclient == null) return new();
-            return ewsclient.ListMessages(ewsclient.GetMailboxInfo().InboxUri);
+            if (instance == null || type == null || ewsclient == null || clientConfig == null) return new();
+            if(((EWS)clientConfig).emailAdress == "")
+            {
+                return ewsclient.ListMessages(ewsclient.GetMailboxInfo().InboxUri);
+            }
+            return ewsclient.ListMessages(ewsclient.GetMailboxInfo(((EWS)clientConfig).emailAdress).InboxUri);
         }
 
         public ImapMessageInfoCollection GetIMAPEmails()
         {
-            if (instance == null || type == null || imapclient == null || imapclient.ConnectionState != ConnectionState.Open) return new();
-            return imapclient.ListMessages();
+            if (instance == null || type == null || imapclient == null || imapclient.ConnectionState != ConnectionState.Open || clientConfig == null) return new();
+            if(clientConfig.folder == "")
+            {
+                return imapclient.ListMessages();
+            }
+            return imapclient.ListMessages(clientConfig.folder);
         }
 
         public dynamic? GetClient() => type switch
@@ -57,6 +69,7 @@ namespace WeTransferDownloader.Handler
             EmailType.EWS => ewsclient,
             _ => null
         };
+
 
         public List<MessageInfoBase> GetWeTransferMails()
         {

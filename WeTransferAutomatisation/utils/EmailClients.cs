@@ -36,10 +36,12 @@ namespace WeTransferDownloader.Utils.EmailClients
     public class EWS : EmailClients
     {
         public string domain = "";
+        public string emailAdress = "";
 
-        public EWS(string host, string domain, string username, string password, string folder = "inbox") : base(host, username, password, folder)
+        public EWS(string host, string domain, string username, string password, string emailAdress) : base(host, username, password)
         {
             this.domain = domain;
+            this.emailAdress = emailAdress;
         }
     }
 }
