@@ -145,5 +145,42 @@ namespace WeTransferDownloader.Handler
             }
             return result;
         }
+
+        public void Delete(MessageInfoBase messageInfo)
+        {
+            dynamic? client = GetClient();
+            if (client is ImapClient client1)
+            {
+                client1.DeleteMessage(((ImapMessageInfo)messageInfo).SequenceNumber);
+            }
+            else if (client is IEWSClient client2)
+            {
+                client2.MoveItem(((ExchangeMessageInfo)messageInfo).UniqueUri, client2.GetMailboxInfo().DeletedItemsUri);
+            }
+        }
+
+        public bool Send(MailMessage message)
+        {
+            if (GetClient() is IEWSClient client2)
+            {
+                try
+                {
+                    client2.Send(message);
+                    return true;
+                }
+                catch (Exception) {}
+            }
+            return false;
+        }
+
+        public MailMessage? GetMail(MessageInfoBase messageInfo)
+        {
+            return type switch
+            {
+                EmailType.IMAP => imapclient?.FetchMessage(((ImapMessageInfo)messageInfo).SequenceNumber),
+                EmailType.EWS => ewsclient?.FetchMessage(((ExchangeMessageInfo)messageInfo).UniqueUri),
+                _ => null,
+            };
+        }
     }
 }
