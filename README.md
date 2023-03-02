@@ -27,3 +27,4 @@ Start the Wetransfer Downloader with
 ```
 emailHandler.DownloadWeTransfer(downloadhandler);
 ```
+bitte beachten sie das der DownloadWeTransfer() asynchron läuft und somit nicht auf den Download gewartet wird.

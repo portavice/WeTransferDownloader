@@ -38,7 +38,8 @@ namespace WeTransferDownloader.Handler
         public EmailHandler(EWS ews)
         {
             type = EmailType.EWS;
-            ewsclient = EWSClient.GetEWSClient(ews.host, new NetworkCredential(ews.username, ews.password, ews.domain));
+            NetworkCredential networkCredential = new(ews.username, ews.password, ews.domain);
+            ewsclient = EWSClient.GetEWSClient(ews.host, (ICredentials)networkCredential);
             clientConfig = ews;
             instance = this;
         }
@@ -107,14 +108,7 @@ namespace WeTransferDownloader.Handler
             {
                 return "";
             }
-            foreach (string brakeEmail in mail.HtmlBody.Split("<a href="))
-            {
-                if (brakeEmail.Contains("wetransfer.com/downloads/"))
-                {
-                    return brakeEmail.Split("\"")[1];
-                }
-            }
-            return "";
+            return "https://wetransfer.com/downloads/" + mail.HtmlBody.Split("wetransfer.com/downloads/")[1].Split("\"")[0];
         }
 
         public string GetUniqueID(MessageInfoBase msginfo)

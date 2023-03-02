@@ -56,7 +56,7 @@ namespace WeTransferDownloader.Handler
             FirefoxProfile profile = new();
             profile.SetPreference("browser.download.dir", firefox.DownloadPath);
             profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "*");
-            FirefoxOptions options = new FirefoxOptions() { Profile = profile };
+            FirefoxOptions options = new() { Profile = profile };
             if(firefox.Silent)
             {
                 options.AddArguments("--disable-extensions");
