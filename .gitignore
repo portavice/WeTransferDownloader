@@ -1,5 +1,6 @@
 .vs
 .git
+.idea
 WeTransferAutomatisation/bin
 WeTransferAutomatisation/obj
 WeTransferAutomatisation/utils/Config.cs

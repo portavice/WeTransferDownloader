@@ -1,30 +1,38 @@
 # WeTransfer Automatisation
 
-Der WeTransfer-Downloader kümmert sich vollautomatisch um ihre empfangenen WeTransfers.
-Das Tool liest voll automatisch ein Emailpostfach aus und nimmt sich alle WeTransfer-Emails.
-Aus denen wird der Download-Link ausgelesen und die Daten herunter geladen.
+The WeTransfer downloader takes care of your received WeTransfers fully automatically.
+The tool reads an email inbox fully automatically and takes all WeTransfer emails.
+The download link is read from these and the data is downloaded.
 
-Diese Version des WeTransfer-Downloaders ist zur Nutzung als Nuget-Packet erstellt.
-Die Emails können über EWS- und IMAP-Verbindungen abgerufen werden.
-Die Konfiguration erfolgt hier im Mailhandler.
-Der WeTransfer-Downloader kann als Standalone Applikation genutzt werden.
-In dem Packet sind Treiber für die Browser Edge/ Firefox/ Chrome installiert.
-
+This version of the WeTransfer downloader is designed for use as a Nuget package.
+The emails can be retrieved via EWS | IMAP | Graph | Pop3 connections.
+The configuration is done here in the mail handler.
+The WeTransfer-Downloader can be used as a standalone application.
+Drivers for the Edge | Firefox | Chrome browsers are installed in the package.
 
 ## Usage
-Create a EmailHandler choose between IMAP and EWS
+
+Create a EmailHandler choose between EWS | IMAP | Graph | Pop3
+
 ```
-EmailHandler emailHandler = new EmailHandler(new IMAP("host", 143 /*port*/, "username", "password"));
+EmailHandler emailHandler = new EmailHandler(new Imap("host", 143 /*port*/, "username", "password"));
 EmailHandler emailHandler = new EmailHandler(new EWS("host", "domain", "username", "password"));
+EmailHandler emailHandler = new EmailHandler(new Graph("clientId", "tenantId"));
+EmailHandler emailHandler = new EmailHandler(new Pop("host", 110 /*port*/, "username", "password"));
 ```
+
 Create a DownloadHandler choose between Chrome, Firefox and Edge
+
 ```
-DownloadHandler downloadHandler = new DownloadHandler(new Chrome("downloadpath"));
-DownloadHandler downloadHandler = new DownloadHandler(new Firefox("downloadpath"));
-DownloadHandler downloadHandler = new DownloadHandler(new Edge("downloadpath"));
+DownloadHandler downloadHandler = new DownloadHandler(new Chrome("downloadpath", true /*headless*/));
+DownloadHandler downloadHandler = new DownloadHandler(new Firefox("downloadpath", true /*headless*/));
+DownloadHandler downloadHandler = new DownloadHandler(new Edge("downloadpath", true /*headless*/));
 ```
+
 Start the Wetransfer Downloader with
+
 ```
 emailHandler.DownloadWeTransfer(downloadhandler);
 ```
-bitte beachten sie das der DownloadWeTransfer() asynchron läuft und somit nicht auf den Download gewartet wird.
+
+Please note that the DownloadWeTransfer() runs asynchronously and therefore does not wait for the download.

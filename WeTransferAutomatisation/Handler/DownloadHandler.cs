@@ -1,185 +1,100 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Firefox;
-using WeTransferDownloader.Enums;
-using WeTransferDownloader.Utils.BrowserClients;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
+using OpenQA.Selenium;
+using WeTransferAutomatisation.BrowserTypes;
+using WeTransferAutomatisation.BrowserTypes.Interface;
 
-namespace WeTransferDownloader.Handler
+namespace WeTransferAutomatisation.Handler;
+
+[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+// ReSharper disable once ClassNeverInstantiated.Global
+public class DownloadHandler
 {
-    public class DownloadHandler
+    private static DownloadHandler? _instance;
+    public readonly IBrowserType? Type;
+
+    public DownloadHandler()
     {
-        public readonly BrowserType? type = null;
-        private readonly IWebDriver? driver = null;
-        private readonly string downloadpath = "";
-        private static readonly DownloadHandler? instance = null;
-        public DownloadHandler()
+        if (_instance == null) return;
+        Type = _instance.Type;
+    }
+
+    public DownloadHandler(Chrome chrome)
+    {
+        Type = chrome;
+        _instance = this;
+    }
+
+    public DownloadHandler(Edge edge)
+    {
+        Type = edge;
+        _instance = this;
+    }
+
+    public DownloadHandler(Firefox firefox)
+    {
+        Type = firefox;
+        _instance = this;
+    }
+
+    public IWebDriver? GetDriver()
+    {
+        return Type?.GetDriver();
+    }
+
+    public async Task DownloadWeTransfer(string url)
+    {
+        if (Type == null) return;
+        try
         {
-            if (instance == null) return;
-            type = instance.type;
-            driver = instance.driver;
-            downloadpath = instance.downloadpath;
+            var driver = Type.GetDriver();
+            driver.Navigate().GoToUrl(url);
+            driver.Manage().Window.Size = new Size(1212, 824);
+            await Task.Delay(1500);
+
+            await ClickButton(".fides-banner-button.fides-banner-button-primary.fides-reject-all-button");
+            await Task.Delay(500);
+
+            await ClickButton(".transfer__button");
+            await Task.Delay(500);
+
+            await ClickButton(".transfer__button");
+            await Task.Delay(1000);
+
+            await CheckIfDownloadIsFinished();
+        }
+        catch (Exception)
+        {
+            // ignored
         }
 
-        public DownloadHandler(Chrome chrome)
+        Stop();
+    }
+
+    public void Stop()
+    {
+        Type?.Stop();
+    }
+
+
+    private async Task ClickButton(string classname)
+    {
+        var element = Type?.GetDriver().FindElement(By.CssSelector(classname));
+        if (element == null) return;
+
+        var elementEnabled = element.Enabled;
+        while (!elementEnabled)
         {
-            type = BrowserType.Chrome;
-            downloadpath = chrome.DownloadPath;
-            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
-            service.SuppressInitialDiagnosticInformation = true;
-            service.EnableVerboseLogging = false;
-            service.HideCommandPromptWindow = true;
-            service.EnableAppendLog = false;
-            ChromeOptions options = new();
-            if(chrome.Silent)
-            {
-                options.AddArguments("--disable-extensions");
-                options.AddArgument("test-type");
-                options.AddArgument("--ignore-certificate-errors");
-                options.AddArgument("no-sandbox");
-                options.AddArgument("headless");
-                options.AddArgument("--silent");
-                options.AddArgument("--disable-gpu");
-                options.AddArgument("--log-level=3");
-            }
-            options.AddUserProfilePreference("download.default_directory", chrome.DownloadPath);
-            options.AddUserProfilePreference("download.prompt_for_download", false);
-            driver = new ChromeDriver(service, options);
+            await Task.Delay(500);
+            elementEnabled = element.Enabled;
         }
 
-        public DownloadHandler(Firefox firefox)
-        {
-            type = BrowserType.Firefox;
-            downloadpath = firefox.DownloadPath; 
-            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService();
-            service.SuppressInitialDiagnosticInformation = true;
-            FirefoxProfile profile = new();
-            profile.SetPreference("browser.download.dir", firefox.DownloadPath);
-            profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "*");
-            FirefoxOptions options = new() { Profile = profile };
-            if(firefox.Silent)
-            {
-                options.AddArguments("--disable-extensions");
-                options.AddArgument("test-type");
-                options.AddArgument("--ignore-certificate-errors");
-                options.AddArgument("no-sandbox");
-                options.AddArgument("headless");
-                options.AddArgument("--silent");
-                options.AddArgument("--disable-gpu");
-                options.AddArgument("--log-level=3");
-            }
-            driver = new FirefoxDriver(service, options);
-        }
+        element.Click();
+    }
 
-        public DownloadHandler(Edge edge)
-        {
-            type = BrowserType.Edge;
-            downloadpath = edge.DownloadPath;
-            EdgeDriverService service = EdgeDriverService.CreateDefaultService();
-            service.SuppressInitialDiagnosticInformation = true;
-            service.EnableVerboseLogging = false;
-            service.EnableAppendLog = false;
-            EdgeOptions options = new();
-            if(edge.Silent)
-            {
-                options.AddArguments("--disable-extensions");
-                options.AddArgument("test-type");
-                options.AddArgument("--ignore-certificate-errors");
-                options.AddArgument("no-sandbox");
-                options.AddArgument("headless");
-                options.AddArgument("--silent");
-                options.AddArgument("--disable-gpu");
-                options.AddArgument("--log-level=3");
-            }
-            options.AddUserProfilePreference("download.default_directory", edge.DownloadPath);
-            options.AddUserProfilePreference("download.prompt_for_download", false);
-            driver = new EdgeDriver(service, options);
-        }
-
-        public IWebDriver? GetDriver() => driver;
-
-        public async Task DownloadWeTransfer(string url)
-        {
-            if (driver == null || type == null) return;
-            try
-            {
-                driver.Navigate().GoToUrl(url);
-
-                await Task.Delay(500);
-                await ClickButton("welcome__button--decline-experiment");
-                await ClickButton("transfer__button");
-                await ClickButton("transfer__button");
-
-                await Task.Delay(1000);
-
-                await CheckIfDownloadisFinished();
-            }
-            catch (Exception) { }
-            Stop();
-        }
-
-        public void Stop()
-        {
-            if (driver == null) return;
-            try
-            {
-                driver.Close();
-                driver.Dispose();
-            }
-            catch (Exception) { }
-        }
-
-
-        private async Task ClickButton(string classname)
-        {
-            if (driver == null) return;
-            IWebElement element = driver.FindElement(By.ClassName(classname));
-            if (element == null) return;
-
-            bool buttonenabled = element.Enabled;
-            while (!buttonenabled)
-            {
-                await Task.Delay(500);
-                buttonenabled = element.Enabled;
-            }
-            element.Click();
-        }
-
-        public async Task CheckIfDownloadisFinished()
-        {
-            bool downloadFinished = false;
-            switch (type)
-            {
-                case BrowserType.Chrome:
-                case BrowserType.Edge:
-                    while (!downloadFinished)
-                    {
-                        foreach (string fi in Directory.GetFiles(downloadpath))
-                        {
-                            downloadFinished = !Path.GetExtension(fi).Contains("crdownload");
-                            if (downloadFinished)
-                            {
-                                break;
-                            }
-                        }
-                        await Task.Delay(1000);
-                    }
-                    break;
-                case BrowserType.Firefox:
-                    while (!downloadFinished)
-                    {
-                        foreach (string fi in Directory.GetFiles(downloadpath))
-                        {
-                            downloadFinished = !Path.GetExtension(fi).Contains("part");
-                            if (downloadFinished)
-                            {
-                                break;
-                            }
-                        }
-                        await Task.Delay(1000);
-                    }
-                    break;
-            }
-        }
+    public async Task CheckIfDownloadIsFinished()
+    {
+        if (Type == null) return;
+        await Type.CheckIfDownloadIsFinished();
     }
 }

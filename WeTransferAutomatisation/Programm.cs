@@ -1,7 +1,9 @@
-﻿
-internal class Programm
+﻿namespace WeTransferAutomatisation;
+
+internal abstract class Programm
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
+        _ = args;
     }
 }
